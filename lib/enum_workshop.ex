@@ -160,12 +160,10 @@ defmodule EnumWorkshop do
     [1, 2, 1]
   """
   @spec dedup(list) :: [Any]
-  def dedup([]) do
-    []
-  end
-  def dedup([head|_] = list) do
-    do_dedup(list, head, [head])
-  end
+  def dedup([]),
+    do: []
+  def dedup([head|tail]),
+    do: do_dedup(tail, head, [head])
 
   defp do_dedup([], _, acc),
     do: reverse acc
