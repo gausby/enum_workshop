@@ -13,9 +13,8 @@ defmodule EnumWorkshop do
     4
   """
   @spec count(list) :: [Any]
-  def count(list) do
-    do_count(list, 0)
-  end
+  def count(list),
+    do: do_count(list, 0)
 
   defp do_count([], acc),
     do: acc
@@ -44,16 +43,13 @@ defmodule EnumWorkshop do
     iex> EnumWorkshop.member?([1, 2, 3, 4], 7)
     false
   """
-  @spec member?(list, Any) :: Boolean
-  def member?([n|_], n) do
-    true
-  end
-  def member?([], _) do
-    false
-  end
-  def member?([_|tail], n) do
-    member?(tail, n)
-  end
+  @spec member?([Any], Any) :: Boolean
+  def member?([n|_], n),
+    do: true
+  def member?([], _),
+    do: false
+  def member?([_|tail], n),
+    do: member?(tail, n)
 
   @doc """
   reimplement the functionality of `Enum.reverse/1` without using the
@@ -69,16 +65,13 @@ defmodule EnumWorkshop do
     [1, 2, 1]
   """
   @spec reverse(list) :: [Any]
-  def reverse(list) do
-    do_reverse(list, [])
-  end
+  def reverse(list),
+    do: do_reverse(list, [])
 
-  defp do_reverse([], acc) do
-    acc
-  end
-  defp do_reverse([head|tail], acc) do
-    do_reverse(tail, [head|acc])
-  end
+  defp do_reverse([], acc),
+    do: acc
+  defp do_reverse([head|tail], acc),
+    do: do_reverse(tail, [head|acc])
 
   @doc """
   reimplement the functionality of `Enum.min/1` without using the
@@ -97,22 +90,17 @@ defmodule EnumWorkshop do
     3
   """
   @spec min([Integer]) :: Integer | :error
-  def min([]) do
-    :error
-  end
-  def min([head|tail]) do
-    do_min(tail, head)
-  end
+  def min([]),
+    do: :error
+  def min([head|tail]),
+    do: do_min(tail, head)
 
-  def do_min([], min) do
-    min
-  end
-  def do_min([head|tail], min) when head < min do
-    do_min(tail, head)
-  end
-  def do_min([_|tail], min) do
-    do_min(tail, min)
-  end
+  def do_min([], min),
+    do: min
+  def do_min([head|tail], min) when head < min,
+    do: do_min(tail, head)
+  def do_min([_|tail], min),
+    do: do_min(tail, min)
 
   @doc """
   reimplement the functionality of `Enum.filter/2` without using the
@@ -128,9 +116,8 @@ defmodule EnumWorkshop do
     [1, 3, 5]
   """
   @spec filter(list, function) :: [Any]
-  def filter(list, fun) do
-    do_filter list, fun, []
-  end
+  def filter(list, fun),
+    do: do_filter list, fun, []
 
   defp do_filter([], _, acc) do
     reverse acc
