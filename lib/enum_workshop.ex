@@ -191,22 +191,48 @@ defmodule EnumWorkshop do
     [[5, 42, 3]]
   """
   @spec chunk(Any, pos_integer) :: [list]
-  def chunk(list, n) do
-    do_chunk list, 0, n, [], []
+  def chunk(list, n),
+    do: do_chunk(list, n, [])
+
+  defp do_chunk([], _, acc),
+    do: reverse(acc)
+  defp do_chunk(list, n, acc) do
+    case take(list, n) do
+      {taken, rest} when length(taken) == n ->
+        do_chunk(rest, n, [taken|acc])
+      {_, rest} ->
+        do_chunk(rest, n, acc)
+    end
   end
 
-  defp do_chunk([], n, n, chunk_acc, acc) do
-    reverse [reverse(chunk_acc)|acc]
-  end
-  defp do_chunk([], _, _, _, acc) do
-    reverse acc
-  end
-  defp do_chunk([head|tail], n, n, chunk_acc, acc) do
-    do_chunk(tail, 1, n, [head], [reverse(chunk_acc)|acc])
-  end
-  defp do_chunk([head|tail], current, n, chunk_acc, acc) do
-    new_pos = current + 1
-    do_chunk(tail, new_pos, n, [head|chunk_acc], acc)
-  end
+  @doc """
+  Take the first n-elements of a list, return a two tuple containing
+  the list of taken elements and the remaining elements in the list.
 
+    iex> EnumWorkshop.take([1, 2, 3], 1)
+    {[1], [2, 3]}
+
+    iex> EnumWorkshop.take([1, 2, 3], 2)
+    {[1, 2], [3]}
+
+    iex> EnumWorkshop.take([1, 2, 3], 3)
+    {[1, 2, 3], []}
+
+    iex> EnumWorkshop.take([1, 2, 3], 0)
+    {[], [1, 2, 3]}
+
+    iex> EnumWorkshop.take([1, 2, 3], 4)
+    {[1, 2, 3], []}
+
+    iex> EnumWorkshop.take([], 4)
+    {[], []}
+  """
+  @spec take([Any], pos_integer) :: {[Any], [Any]}
+  def take(list, n),
+    do: do_take(list, n, [])
+
+  defp do_take([head|tail], n, acc) when n > 0,
+    do: do_take(tail, n - 1, [head|acc])
+  defp do_take(rest, _, acc),
+    do: {reverse(acc), rest}
 end
